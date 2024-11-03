@@ -1,29 +1,11 @@
 package net.minecraft.client.stream;
 
 import com.google.common.collect.Lists;
-
-import java.util.List;
-
 import tv.twitch.AuthToken;
 import tv.twitch.ErrorCode;
-import tv.twitch.broadcast.ArchivingState;
-import tv.twitch.broadcast.AudioParams;
-import tv.twitch.broadcast.ChannelInfo;
-import tv.twitch.broadcast.EncodingCpuUsage;
-import tv.twitch.broadcast.FrameBuffer;
-import tv.twitch.broadcast.GameInfoList;
-import tv.twitch.broadcast.IStatCallbacks;
-import tv.twitch.broadcast.IStreamCallbacks;
-import tv.twitch.broadcast.IngestList;
-import tv.twitch.broadcast.IngestServer;
-import tv.twitch.broadcast.PixelFormat;
-import tv.twitch.broadcast.RTMPState;
-import tv.twitch.broadcast.StartFlags;
-import tv.twitch.broadcast.StatType;
-import tv.twitch.broadcast.Stream;
-import tv.twitch.broadcast.StreamInfo;
-import tv.twitch.broadcast.UserInfo;
-import tv.twitch.broadcast.VideoParams;
+import tv.twitch.broadcast.*;
+
+import java.util.List;
 
 public class IngestServerTester {
     protected IngestServerTester.IngestTestListener field_153044_b = null;
@@ -98,7 +80,7 @@ public class IngestServerTester {
 
         public void stopCallback(ErrorCode p_stopCallback_1_) {
             if (ErrorCode.failed(p_stopCallback_1_)) {
-                System.out.println("IngestTester.stopCallback failed to stop - " + IngestServerTester.this.field_153059_q.serverName + ": " + p_stopCallback_1_.toString());
+                System.out.println("IngestTester.stopCallback failed to stop - " + IngestServerTester.this.field_153059_q.serverName + ": " + p_stopCallback_1_);
             }
 
             IngestServerTester.this.field_176007_z = false;
@@ -185,7 +167,7 @@ public class IngestServerTester {
             this.audioParameters.enableMicCapture = false;
             this.audioParameters.enablePlaybackCapture = false;
             this.audioParameters.enablePassthroughAudio = false;
-            this.field_153055_m = Lists.<FrameBuffer>newArrayList();
+            this.field_153055_m = Lists.newArrayList();
             int i = 3;
 
             for (int j = 0; j < i; ++j) {
@@ -297,7 +279,7 @@ public class IngestServerTester {
 
             if (ErrorCode.failed(errorcode)) {
                 this.field_176005_A.stopCallback(ErrorCode.TTV_EC_SUCCESS);
-                System.out.println("Stop failed: " + errorcode.toString());
+                System.out.println("Stop failed: " + errorcode);
             }
 
             this.field_153045_c.pollStats();

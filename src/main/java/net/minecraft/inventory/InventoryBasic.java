@@ -1,14 +1,13 @@
 package net.minecraft.inventory;
 
 import com.google.common.collect.Lists;
-
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+
+import java.util.List;
 
 public class InventoryBasic implements IInventory {
     private String inventoryTitle;
@@ -139,7 +138,7 @@ public class InventoryBasic implements IInventory {
     }
 
     public IChatComponent getDisplayName() {
-        return this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]);
+        return this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName());
     }
 
     public int getInventoryStackLimit() {

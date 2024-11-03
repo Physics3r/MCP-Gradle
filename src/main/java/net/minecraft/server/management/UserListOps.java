@@ -19,15 +19,15 @@ public class UserListOps extends UserList<GameProfile, UserListOpsEntry> {
         int i = 0;
 
         for (UserListOpsEntry userlistopsentry : this.getValues().values()) {
-            astring[i++] = ((GameProfile) userlistopsentry.getValue()).getName();
+            astring[i++] = userlistopsentry.getValue().getName();
         }
 
         return astring;
     }
 
     public boolean bypassesPlayerLimit(GameProfile profile) {
-        UserListOpsEntry userlistopsentry = (UserListOpsEntry) this.getEntry(profile);
-        return userlistopsentry != null ? userlistopsentry.bypassesPlayerLimit() : false;
+        UserListOpsEntry userlistopsentry = this.getEntry(profile);
+        return userlistopsentry != null && userlistopsentry.bypassesPlayerLimit();
     }
 
     protected String getObjectKey(GameProfile obj) {

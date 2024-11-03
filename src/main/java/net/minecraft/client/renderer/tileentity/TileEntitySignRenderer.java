@@ -1,7 +1,5 @@
 package net.minecraft.client.renderer.tileentity;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -18,6 +16,8 @@ import net.minecraft.util.ResourceLocation;
 import net.optifine.CustomColors;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer<TileEntitySign> {
     private static final ResourceLocation SIGN_TEXTURE = new ResourceLocation("textures/entity/sign.png");
@@ -91,7 +91,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer<TileEntity
                     if (te.signText[j] != null) {
                         IChatComponent ichatcomponent = te.signText[j];
                         List<IChatComponent> list = GuiUtilRenderComponents.splitText(ichatcomponent, 90, fontrenderer, false, true);
-                        String s = list != null && list.size() > 0 ? ((IChatComponent) list.get(0)).getFormattedText() : "";
+                        String s = list != null && list.size() > 0 ? list.get(0).getFormattedText() : "";
 
                         if (j == te.lineBeingEdited) {
                             s = "> " + s + " <";
@@ -125,9 +125,7 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer<TileEntity
                 Entity entity = Config.getMinecraft().getRenderViewEntity();
                 double d0 = p_isRenderText_0_.getDistanceSq(entity.posX, entity.posY, entity.posZ);
 
-                if (d0 > textRenderDistanceSq) {
-                    return false;
-                }
+                return !(d0 > textRenderDistanceSq);
             }
 
             return true;

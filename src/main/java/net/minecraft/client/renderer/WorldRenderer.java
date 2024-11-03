@@ -1,16 +1,6 @@
 package net.minecraft.client.renderer;
 
 import com.google.common.primitives.Floats;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.ShortBuffer;
-import java.util.Arrays;
-import java.util.BitSet;
-import java.util.Comparator;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -25,6 +15,11 @@ import net.optifine.shaders.SVertexBuilder;
 import net.optifine.util.TextureUtils;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.GL11;
+
+import java.nio.*;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.Comparator;
 
 public class WorldRenderer {
     private ByteBuffer byteBuffer;
@@ -181,8 +176,8 @@ public class WorldRenderer {
 
     private static float getDistanceSq(FloatBuffer p_181665_0_, float p_181665_1_, float p_181665_2_, float p_181665_3_, int p_181665_4_, int p_181665_5_) {
         float f = p_181665_0_.get(p_181665_5_);
-        float f1 = p_181665_0_.get(p_181665_5_ + 0 + 1);
-        float f2 = p_181665_0_.get(p_181665_5_ + 0 + 2);
+        float f1 = p_181665_0_.get(p_181665_5_ + 1);
+        float f2 = p_181665_0_.get(p_181665_5_ + 2);
         float f3 = p_181665_0_.get(p_181665_5_ + p_181665_4_);
         float f4 = p_181665_0_.get(p_181665_5_ + p_181665_4_ + 1);
         float f5 = p_181665_0_.get(p_181665_5_ + p_181665_4_ + 2);

@@ -1,19 +1,18 @@
 package net.optifine;
 
 import com.google.common.collect.AbstractIterator;
-
-import java.util.Iterator;
-
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3i;
 
+import java.util.Iterator;
+
 public class BlockPosM extends BlockPos {
     private int mx;
     private int my;
     private int mz;
-    private int level;
+    private final int level;
     private BlockPosM[] facings;
     private boolean needsUpdate;
 
@@ -129,7 +128,7 @@ public class BlockPosM extends BlockPos {
                 return new AbstractIterator() {
                     private BlockPosM theBlockPosM = null;
 
-                    protected BlockPosM computeNext0() {
+                    private BlockPosM computeNext0() {
                         if (this.theBlockPosM == null) {
                             this.theBlockPosM = new BlockPosM(blockpos.getX(), blockpos.getY(), blockpos.getZ(), 3);
                             return this.theBlockPosM;

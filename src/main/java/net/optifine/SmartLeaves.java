@@ -1,8 +1,5 @@
 package net.optifine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.block.BlockOldLeaf;
@@ -16,6 +13,9 @@ import net.minecraft.src.Config;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.model.ModelUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SmartLeaves {
     private static IBakedModel modelLeavesCullAcacia = null;
@@ -52,7 +52,7 @@ public class SmartLeaves {
         } else {
             Block block = state1.getBlock();
             Block block1 = state2.getBlock();
-            return block != block1 ? false : (block instanceof BlockOldLeaf ? ((BlockPlanks.EnumType) state1.getValue(BlockOldLeaf.VARIANT)).equals(state2.getValue(BlockOldLeaf.VARIANT)) : (block instanceof BlockNewLeaf ? state1.getValue(BlockNewLeaf.VARIANT).equals(state2.getValue(BlockNewLeaf.VARIANT)) : false));
+            return block == block1 && (block instanceof BlockOldLeaf ? state1.getValue(BlockOldLeaf.VARIANT).equals(state2.getValue(BlockOldLeaf.VARIANT)) : (block instanceof BlockNewLeaf && state1.getValue(BlockNewLeaf.VARIANT).equals(state2.getValue(BlockNewLeaf.VARIANT))));
         }
     }
 

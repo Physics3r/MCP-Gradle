@@ -13,11 +13,11 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAIFollowOwner extends EntityAIBase {
-    private EntityTameable thePet;
+    private final EntityTameable thePet;
     private EntityLivingBase theOwner;
     World theWorld;
-    private double followSpeed;
-    private PathNavigate petPathfinder;
+    private final double followSpeed;
+    private final PathNavigate petPathfinder;
     private int field_75343_h;
     float maxDist;
     float minDist;
@@ -73,7 +73,7 @@ public class EntityAIFollowOwner extends EntityAIBase {
     private boolean func_181065_a(BlockPos p_181065_1_) {
         IBlockState iblockstate = this.theWorld.getBlockState(p_181065_1_);
         Block block = iblockstate.getBlock();
-        return block == Blocks.air ? true : !block.isFullCube();
+        return block == Blocks.air || !block.isFullCube();
     }
 
     public void updateTask() {

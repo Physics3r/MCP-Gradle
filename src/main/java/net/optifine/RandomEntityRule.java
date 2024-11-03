@@ -1,7 +1,5 @@
 package net.optifine;
 
-import java.util.Properties;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityVillager;
@@ -12,21 +10,17 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.optifine.config.ConnectedParser;
-import net.optifine.config.Matches;
-import net.optifine.config.NbtTagValue;
-import net.optifine.config.RangeInt;
-import net.optifine.config.RangeListInt;
-import net.optifine.config.VillagerProfession;
-import net.optifine.config.Weather;
+import net.optifine.config.*;
 import net.optifine.reflect.Reflector;
 import net.optifine.util.ArrayUtils;
 import net.optifine.util.MathUtils;
 
+import java.util.Properties;
+
 public class RandomEntityRule {
     private String pathProps = null;
     private ResourceLocation baseResLoc = null;
-    private int index;
+    private final int index;
     private int[] textures = null;
     private ResourceLocation[] resourceLocations = null;
     private int[] weights = null;
@@ -71,7 +65,7 @@ public class RandomEntityRule {
         this.baby = cp.parseBooleanObject(props.getProperty("baby." + index));
         this.moonPhases = cp.parseRangeListInt(props.getProperty("moonPhase." + index));
         this.dayTimes = cp.parseRangeListInt(props.getProperty("dayTime." + index));
-        this.weatherList = cp.parseWeather(props.getProperty("weather." + index), "weather." + index, (Weather[]) null);
+        this.weatherList = cp.parseWeather(props.getProperty("weather." + index), "weather." + index, null);
     }
 
     private RangeListInt parseMinMaxHeight(Properties props, int index) {
@@ -336,9 +330,7 @@ public class RandomEntityRule {
                 if (world2 != null) {
                     Weather weather = Weather.getWeather(world2, 0.0F);
 
-                    if (!ArrayUtils.contains(this.weatherList, weather)) {
-                        return false;
-                    }
+                    return ArrayUtils.contains(this.weatherList, weather);
                 }
             }
 

@@ -1,18 +1,14 @@
 package net.minecraft.tileentity;
 
-import java.util.Random;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
+
+import java.util.Random;
 
 public class TileEntityEnchantmentTable extends TileEntity implements ITickable, IInteractionObject {
     public int tickCount;
@@ -120,7 +116,7 @@ public class TileEntityEnchantmentTable extends TileEntity implements ITickable,
     }
 
     public IChatComponent getDisplayName() {
-        return this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]);
+        return this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName());
     }
 
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {

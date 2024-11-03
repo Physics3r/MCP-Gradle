@@ -1,13 +1,13 @@
 package net.minecraft.command;
 
-import java.util.List;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
+
+import java.util.List;
 
 public class CommandEffect extends CommandBase {
     public String getCommandName() {
@@ -24,16 +24,16 @@ public class CommandEffect extends CommandBase {
 
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if (args.length < 2) {
-            throw new WrongUsageException("commands.effect.usage", new Object[0]);
+            throw new WrongUsageException("commands.effect.usage");
         } else {
-            EntityLivingBase entitylivingbase = (EntityLivingBase) getEntity(sender, args[0], EntityLivingBase.class);
+            EntityLivingBase entitylivingbase = getEntity(sender, args[0], EntityLivingBase.class);
 
             if (args[1].equals("clear")) {
                 if (entitylivingbase.getActivePotionEffects().isEmpty()) {
-                    throw new CommandException("commands.effect.failure.notActive.all", new Object[]{entitylivingbase.getName()});
+                    throw new CommandException("commands.effect.failure.notActive.all", entitylivingbase.getName());
                 } else {
                     entitylivingbase.clearActivePotions();
-                    notifyOperators(sender, this, "commands.effect.success.removed.all", new Object[]{entitylivingbase.getName()});
+                    notifyOperators(sender, this, "commands.effect.success.removed.all", entitylivingbase.getName());
                 }
             } else {
                 int i;
@@ -73,11 +73,7 @@ public class CommandEffect extends CommandBase {
                         k = parseInt(args[3], 0, 255);
                     }
 
-                    boolean flag = true;
-
-                    if (args.length >= 5 && "true".equalsIgnoreCase(args[4])) {
-                        flag = false;
-                    }
+                    boolean flag = args.length < 5 || !"true".equalsIgnoreCase(args[4]);
 
                     if (l > 0) {
                         PotionEffect potioneffect = new PotionEffect(i, j, k, false, flag);

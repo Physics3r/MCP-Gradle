@@ -1,24 +1,19 @@
 package net.minecraft.client.resources;
 
 import com.google.common.collect.ImmutableSet;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Set;
-
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.reflect.ReflectorForge;
 
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.Map;
+import java.util.Set;
+
 public class DefaultResourcePack implements IResourcePack {
-    public static final Set<String> defaultResourceDomains = ImmutableSet.<String>of("minecraft", "realms");
+    public static final Set<String> defaultResourceDomains = ImmutableSet.of("minecraft", "realms");
     private final Map<String, File> mapAssets;
 
     public DefaultResourcePack(Map<String, File> mapAssetsIn) {
@@ -41,7 +36,7 @@ public class DefaultResourcePack implements IResourcePack {
         }
     }
 
-    public InputStream getInputStreamAssets(ResourceLocation location) throws IOException, FileNotFoundException {
+    public InputStream getInputStreamAssets(ResourceLocation location) throws IOException {
         File file1 = this.mapAssets.get(location.toString());
         return file1 != null && file1.isFile() ? new FileInputStream(file1) : null;
     }

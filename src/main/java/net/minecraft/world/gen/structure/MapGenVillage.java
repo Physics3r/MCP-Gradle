@@ -1,21 +1,21 @@
 package net.minecraft.world.gen.structure;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Map.Entry;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+
 public class MapGenVillage extends MapGenStructure {
-    public static final List<BiomeGenBase> villageSpawnBiomes = Arrays.<BiomeGenBase>asList(new BiomeGenBase[]{BiomeGenBase.plains, BiomeGenBase.desert, BiomeGenBase.savanna});
+    public static final List<BiomeGenBase> villageSpawnBiomes = Arrays.asList(BiomeGenBase.plains, BiomeGenBase.desert, BiomeGenBase.savanna);
     private int terrainType;
     private int field_82665_g;
-    private int field_82666_h;
+    private final int field_82666_h;
 
     public MapGenVillage() {
         this.field_82665_g = 32;
@@ -26,10 +26,10 @@ public class MapGenVillage extends MapGenStructure {
         this();
 
         for (Entry<String, String> entry : p_i2093_1_.entrySet()) {
-            if (((String) entry.getKey()).equals("size")) {
-                this.terrainType = MathHelper.parseIntWithDefaultAndMax((String) entry.getValue(), this.terrainType, 0);
-            } else if (((String) entry.getKey()).equals("distance")) {
-                this.field_82665_g = MathHelper.parseIntWithDefaultAndMax((String) entry.getValue(), this.field_82665_g, this.field_82666_h + 1);
+            if (entry.getKey().equals("size")) {
+                this.terrainType = MathHelper.parseIntWithDefaultAndMax(entry.getValue(), this.terrainType, 0);
+            } else if (entry.getKey().equals("distance")) {
+                this.field_82665_g = MathHelper.parseIntWithDefaultAndMax(entry.getValue(), this.field_82665_g, this.field_82666_h + 1);
             }
         }
     }
@@ -61,9 +61,7 @@ public class MapGenVillage extends MapGenStructure {
         if (i == k && j == l) {
             boolean flag = this.worldObj.getWorldChunkManager().areBiomesViable(i * 16 + 8, j * 16 + 8, 0, villageSpawnBiomes);
 
-            if (flag) {
-                return true;
-            }
+            return flag;
         }
 
         return false;

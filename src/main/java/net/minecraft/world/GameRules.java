@@ -1,12 +1,12 @@
 package net.minecraft.world;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.Set;
 import java.util.TreeMap;
 
-import net.minecraft.nbt.NBTTagCompound;
-
 public class GameRules {
-    private TreeMap<String, GameRules.Value> theGameRules = new TreeMap();
+    private final TreeMap<String, GameRules.Value> theGameRules = new TreeMap();
 
     public GameRules() {
         this.addGameRule("doFireTick", "true", GameRules.ValueType.BOOLEAN_VALUE);
@@ -31,7 +31,7 @@ public class GameRules {
     }
 
     public void setOrCreateGameRule(String key, String ruleValue) {
-        GameRules.Value gamerules$value = (GameRules.Value) this.theGameRules.get(key);
+        GameRules.Value gamerules$value = this.theGameRules.get(key);
 
         if (gamerules$value != null) {
             gamerules$value.setValue(ruleValue);
@@ -41,13 +41,13 @@ public class GameRules {
     }
 
     public String getString(String name) {
-        GameRules.Value gamerules$value = (GameRules.Value) this.theGameRules.get(name);
+        GameRules.Value gamerules$value = this.theGameRules.get(name);
         return gamerules$value != null ? gamerules$value.getString() : "";
     }
 
     public boolean getBoolean(String name) {
-        GameRules.Value gamerules$value = (GameRules.Value) this.theGameRules.get(name);
-        return gamerules$value != null ? gamerules$value.getBoolean() : false;
+        GameRules.Value gamerules$value = this.theGameRules.get(name);
+        return gamerules$value != null && gamerules$value.getBoolean();
     }
 
     public int getInt(String name) {

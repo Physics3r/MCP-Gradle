@@ -1,42 +1,17 @@
 package net.minecraft.client.stream;
 
 import com.google.common.collect.Lists;
-
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.ThreadSafeBoundList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tv.twitch.AuthToken;
-import tv.twitch.Core;
-import tv.twitch.ErrorCode;
-import tv.twitch.MessageLevel;
-import tv.twitch.StandardCoreAPI;
-import tv.twitch.broadcast.ArchivingState;
-import tv.twitch.broadcast.AudioDeviceType;
-import tv.twitch.broadcast.AudioParams;
-import tv.twitch.broadcast.ChannelInfo;
-import tv.twitch.broadcast.DesktopStreamAPI;
-import tv.twitch.broadcast.EncodingCpuUsage;
-import tv.twitch.broadcast.FrameBuffer;
-import tv.twitch.broadcast.GameInfo;
-import tv.twitch.broadcast.GameInfoList;
-import tv.twitch.broadcast.IStatCallbacks;
-import tv.twitch.broadcast.IStreamCallbacks;
-import tv.twitch.broadcast.IngestList;
-import tv.twitch.broadcast.IngestServer;
-import tv.twitch.broadcast.PixelFormat;
-import tv.twitch.broadcast.StartFlags;
-import tv.twitch.broadcast.StatType;
-import tv.twitch.broadcast.Stream;
-import tv.twitch.broadcast.StreamInfo;
-import tv.twitch.broadcast.StreamInfoForSetting;
-import tv.twitch.broadcast.UserInfo;
-import tv.twitch.broadcast.VideoParams;
+import tv.twitch.*;
+import tv.twitch.broadcast.*;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BroadcastController {
     private static final Logger logger = LogManager.getLogger();
@@ -640,7 +615,7 @@ public class BroadcastController {
         long i = this.theStream.sendStartSpanMetaData(this.authenticationToken, p_177946_1_, p_177946_2_, p_177946_4_, p_177946_5_);
 
         if (i == -1L) {
-            this.logError(String.format("Error in SendStartSpanMetaData\n"));
+            this.logError("Error in SendStartSpanMetaData\n");
         }
 
         return i;
@@ -784,7 +759,7 @@ public class BroadcastController {
             FrameBuffer framebuffer = this.theStream.allocateFrameBuffer(this.videoParamaters.outputWidth * this.videoParamaters.outputHeight * 4);
 
             if (!framebuffer.getIsValid()) {
-                this.logError(String.format("Error while allocating frame buffer"));
+                this.logError("Error while allocating frame buffer");
                 return false;
             }
 
@@ -807,7 +782,7 @@ public class BroadcastController {
 
     public FrameBuffer func_152822_N() {
         if (this.field_152875_k.size() == 0) {
-            this.logError(String.format("Out of free buffers, this should never happen"));
+            this.logError("Out of free buffers, this should never happen");
             return null;
         } else {
             FrameBuffer framebuffer = this.field_152875_k.get(this.field_152875_k.size() - 1);

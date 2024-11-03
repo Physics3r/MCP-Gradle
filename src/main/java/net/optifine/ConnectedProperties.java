@@ -1,12 +1,5 @@
 package net.optifine;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -17,14 +10,11 @@ import net.minecraft.src.Config;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.optifine.config.ConnectedParser;
-import net.optifine.config.MatchBlock;
-import net.optifine.config.Matches;
-import net.optifine.config.NbtTagValue;
-import net.optifine.config.RangeInt;
-import net.optifine.config.RangeListInt;
+import net.optifine.config.*;
 import net.optifine.util.MathUtils;
 import net.optifine.util.TextureUtils;
+
+import java.util.*;
 
 public class ConnectedProperties {
     public String name = null;
@@ -179,7 +169,7 @@ public class ConnectedProperties {
                     aint[k] = -1;
 
                     if (map.containsKey(Integer.valueOf(k))) {
-                        aint[k] = ((Integer) map.get(Integer.valueOf(k))).intValue();
+                        aint[k] = map.get(Integer.valueOf(k)).intValue();
                     }
                 }
 
@@ -272,7 +262,7 @@ public class ConnectedProperties {
                 list.add(s);
             }
 
-            String[] astring2 = (String[]) ((String[]) list.toArray(new String[list.size()]));
+            String[] astring2 = (String[]) list.toArray(new String[list.size()]);
 
             for (int i1 = 0; i1 < astring2.length; ++i1) {
                 String s1 = astring2[i1];
@@ -903,7 +893,7 @@ public class ConnectedProperties {
                 }
             }
 
-            TextureAtlasSprite[] atextureatlassprite = (TextureAtlasSprite[]) ((TextureAtlasSprite[]) list.toArray(new TextureAtlasSprite[list.size()]));
+            TextureAtlasSprite[] atextureatlassprite = (TextureAtlasSprite[]) list.toArray(new TextureAtlasSprite[list.size()]);
             return atextureatlassprite;
         }
     }
@@ -913,7 +903,7 @@ public class ConnectedProperties {
     }
 
     public boolean matchesBlock(int blockId, int metadata) {
-        return !Matches.block(blockId, metadata, this.matchBlocks) ? false : Matches.metadata(metadata, this.metadatas);
+        return Matches.block(blockId, metadata, this.matchBlocks) && Matches.metadata(metadata, this.metadatas);
     }
 
     public boolean matchesIcon(TextureAtlasSprite icon) {

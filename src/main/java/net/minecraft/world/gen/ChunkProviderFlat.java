@@ -1,11 +1,6 @@
 package net.minecraft.world.gen;
 
 import com.google.common.collect.Lists;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
@@ -19,19 +14,18 @@ import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
-import net.minecraft.world.gen.structure.MapGenMineshaft;
-import net.minecraft.world.gen.structure.MapGenScatteredFeature;
-import net.minecraft.world.gen.structure.MapGenStronghold;
-import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraft.world.gen.structure.MapGenVillage;
-import net.minecraft.world.gen.structure.StructureOceanMonument;
+import net.minecraft.world.gen.structure.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class ChunkProviderFlat implements IChunkProvider {
-    private World worldObj;
-    private Random random;
+    private final World worldObj;
+    private final Random random;
     private final IBlockState[] cachedBlockIDs = new IBlockState[256];
     private final FlatGeneratorInfo flatWorldGenInfo;
-    private final List<MapGenStructure> structureGenerators = Lists.<MapGenStructure>newArrayList();
+    private final List<MapGenStructure> structureGenerators = Lists.newArrayList();
     private final boolean hasDecoration;
     private final boolean hasDungeons;
     private WorldGenLakes waterLakeGenerator;
@@ -46,7 +40,7 @@ public class ChunkProviderFlat implements IChunkProvider {
             Map<String, Map<String, String>> map = this.flatWorldGenInfo.getWorldFeatures();
 
             if (map.containsKey("village")) {
-                Map<String, String> map1 = (Map) map.get("village");
+                Map<String, String> map1 = map.get("village");
 
                 if (!map1.containsKey("size")) {
                     map1.put("size", "1");
@@ -56,19 +50,19 @@ public class ChunkProviderFlat implements IChunkProvider {
             }
 
             if (map.containsKey("biome_1")) {
-                this.structureGenerators.add(new MapGenScatteredFeature((Map) map.get("biome_1")));
+                this.structureGenerators.add(new MapGenScatteredFeature(map.get("biome_1")));
             }
 
             if (map.containsKey("mineshaft")) {
-                this.structureGenerators.add(new MapGenMineshaft((Map) map.get("mineshaft")));
+                this.structureGenerators.add(new MapGenMineshaft(map.get("mineshaft")));
             }
 
             if (map.containsKey("stronghold")) {
-                this.structureGenerators.add(new MapGenStronghold((Map) map.get("stronghold")));
+                this.structureGenerators.add(new MapGenStronghold(map.get("stronghold")));
             }
 
             if (map.containsKey("oceanmonument")) {
-                this.structureGenerators.add(new StructureOceanMonument((Map) map.get("oceanmonument")));
+                this.structureGenerators.add(new StructureOceanMonument(map.get("oceanmonument")));
             }
         }
 
@@ -104,7 +98,7 @@ public class ChunkProviderFlat implements IChunkProvider {
         }
 
         worldIn.setSeaLevel(j);
-        this.hasDecoration = flag ? false : this.flatWorldGenInfo.getWorldFeatures().containsKey("decoration");
+        this.hasDecoration = !flag && this.flatWorldGenInfo.getWorldFeatures().containsKey("decoration");
     }
 
     public Chunk provideChunk(int x, int z) {

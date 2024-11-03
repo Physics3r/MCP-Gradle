@@ -13,7 +13,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemSword extends Item {
-    private float attackDamage;
+    private final float attackDamage;
     private final Item.ToolMaterial material;
 
     public ItemSword(Item.ToolMaterial material) {
@@ -80,7 +80,7 @@ public class ItemSword extends Item {
     }
 
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return this.material.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
+        return this.material.getRepairItem() == repair.getItem() || super.getIsRepairable(toRepair, repair);
     }
 
     public Multimap<String, AttributeModifier> getItemAttributeModifiers() {

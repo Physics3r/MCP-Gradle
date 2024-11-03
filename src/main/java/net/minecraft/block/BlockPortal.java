@@ -1,11 +1,7 @@
 package net.minecraft.block;
 
 import com.google.common.cache.LoadingCache;
-
-import java.util.Random;
-
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.BlockWorldState;
@@ -15,16 +11,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class BlockPortal extends BlockBreakable {
-    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.<EnumFacing.Axis>create("axis", EnumFacing.Axis.class, new EnumFacing.Axis[]{EnumFacing.Axis.X, EnumFacing.Axis.Z});
+    public static final PropertyEnum<EnumFacing.Axis> AXIS = PropertyEnum.create("axis", EnumFacing.Axis.class, EnumFacing.Axis.X, EnumFacing.Axis.Z);
 
     public BlockPortal() {
         super(Material.portal, false);
@@ -40,7 +34,6 @@ public class BlockPortal extends BlockBreakable {
             BlockPos blockpos;
 
             for (blockpos = pos; !World.doesBlockHaveSolidTopSurface(worldIn, blockpos) && blockpos.getY() > 0; blockpos = blockpos.down()) {
-                ;
             }
 
             if (i > 0 && !worldIn.getBlockState(blockpos.up()).getBlock().isNormalCube()) {
@@ -58,7 +51,7 @@ public class BlockPortal extends BlockBreakable {
     }
 
     public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
-        EnumFacing.Axis enumfacing$axis = (EnumFacing.Axis) worldIn.getBlockState(pos).getValue(AXIS);
+        EnumFacing.Axis enumfacing$axis = worldIn.getBlockState(pos).getValue(AXIS);
         float f = 0.125F;
         float f1 = 0.125F;
 
@@ -100,7 +93,7 @@ public class BlockPortal extends BlockBreakable {
     }
 
     public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-        EnumFacing.Axis enumfacing$axis = (EnumFacing.Axis) state.getValue(AXIS);
+        EnumFacing.Axis enumfacing$axis = state.getValue(AXIS);
 
         if (enumfacing$axis == EnumFacing.Axis.X) {
             BlockPortal.Size blockportal$size = new BlockPortal.Size(worldIn, pos, EnumFacing.Axis.X);
@@ -122,7 +115,7 @@ public class BlockPortal extends BlockBreakable {
         IBlockState iblockstate = worldIn.getBlockState(pos);
 
         if (worldIn.getBlockState(pos).getBlock() == this) {
-            enumfacing$axis = (EnumFacing.Axis) iblockstate.getValue(AXIS);
+            enumfacing$axis = iblockstate.getValue(AXIS);
 
             if (enumfacing$axis == null) {
                 return false;
@@ -143,7 +136,7 @@ public class BlockPortal extends BlockBreakable {
         boolean flag3 = worldIn.getBlockState(pos.south()).getBlock() == this && worldIn.getBlockState(pos.south(2)).getBlock() != this;
         boolean flag4 = flag || flag1 || enumfacing$axis == EnumFacing.Axis.X;
         boolean flag5 = flag2 || flag3 || enumfacing$axis == EnumFacing.Axis.Z;
-        return flag4 && side == EnumFacing.WEST ? true : (flag4 && side == EnumFacing.EAST ? true : (flag5 && side == EnumFacing.NORTH ? true : flag5 && side == EnumFacing.SOUTH));
+        return flag4 && side == EnumFacing.WEST || (flag4 && side == EnumFacing.EAST || (flag5 && side == EnumFacing.NORTH || flag5 && side == EnumFacing.SOUTH));
     }
 
     public int quantityDropped(Random random) {

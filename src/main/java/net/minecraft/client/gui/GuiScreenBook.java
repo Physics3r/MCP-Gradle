@@ -3,10 +3,6 @@ package net.minecraft.client.gui;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonParseException;
 import io.netty.buffer.Unpooled;
-
-import java.io.IOException;
-import java.util.List;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -20,14 +16,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
-import net.minecraft.util.ChatAllowedCharacters;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
+
+import java.io.IOException;
+import java.util.List;
 
 public class GuiScreenBook extends GuiScreen {
     private static final Logger logger = LogManager.getLogger();
@@ -38,8 +33,8 @@ public class GuiScreenBook extends GuiScreen {
     private boolean bookIsModified;
     private boolean bookGettingSigned;
     private int updateCount;
-    private int bookImageWidth = 192;
-    private int bookImageHeight = 192;
+    private final int bookImageWidth = 192;
+    private final int bookImageHeight = 192;
     private int bookTotalPages = 1;
     private int currPage;
     private NBTTagList bookPages;
@@ -89,12 +84,12 @@ public class GuiScreenBook extends GuiScreen {
         Keyboard.enableRepeatEvents(true);
 
         if (this.bookIsUnsigned) {
-            this.buttonList.add(this.buttonSign = new GuiButton(3, this.width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.signButton", new Object[0])));
-            this.buttonList.add(this.buttonDone = new GuiButton(0, this.width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.done", new Object[0])));
-            this.buttonList.add(this.buttonFinalize = new GuiButton(5, this.width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.finalizeButton", new Object[0])));
-            this.buttonList.add(this.buttonCancel = new GuiButton(4, this.width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.cancel", new Object[0])));
+            this.buttonList.add(this.buttonSign = new GuiButton(3, this.width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.signButton")));
+            this.buttonList.add(this.buttonDone = new GuiButton(0, this.width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.done")));
+            this.buttonList.add(this.buttonFinalize = new GuiButton(5, this.width / 2 - 100, 4 + this.bookImageHeight, 98, 20, I18n.format("book.finalizeButton")));
+            this.buttonList.add(this.buttonCancel = new GuiButton(4, this.width / 2 + 2, 4 + this.bookImageHeight, 98, 20, I18n.format("gui.cancel")));
         } else {
-            this.buttonList.add(this.buttonDone = new GuiButton(0, this.width / 2 - 100, 4 + this.bookImageHeight, 200, 20, I18n.format("gui.done", new Object[0])));
+            this.buttonList.add(this.buttonDone = new GuiButton(0, this.width / 2 - 100, 4 + this.bookImageHeight, 200, 20, I18n.format("gui.done")));
         }
 
         int i = (this.width - this.bookImageWidth) / 2;
@@ -168,7 +163,7 @@ public class GuiScreenBook extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         if (button.enabled) {
             if (button.id == 0) {
-                this.mc.displayGuiScreen((GuiScreen) null);
+                this.mc.displayGuiScreen(null);
                 this.sendBookToServer(false);
             } else if (button.id == 3 && this.bookIsUnsigned) {
                 this.bookGettingSigned = true;
@@ -188,7 +183,7 @@ public class GuiScreenBook extends GuiScreen {
                 }
             } else if (button.id == 5 && this.bookGettingSigned) {
                 this.sendBookToServer(true);
-                this.mc.displayGuiScreen((GuiScreen) null);
+                this.mc.displayGuiScreen(null);
             } else if (button.id == 4 && this.bookGettingSigned) {
                 this.bookGettingSigned = false;
             }
@@ -258,14 +253,14 @@ public class GuiScreenBook extends GuiScreen {
             case 156:
                 if (!this.bookTitle.isEmpty()) {
                     this.sendBookToServer(true);
-                    this.mc.displayGuiScreen((GuiScreen) null);
+                    this.mc.displayGuiScreen(null);
                 }
 
                 return;
 
             default:
                 if (this.bookTitle.length() < 16 && ChatAllowedCharacters.isAllowedCharacter(p_146460_1_)) {
-                    this.bookTitle = this.bookTitle + Character.toString(p_146460_1_);
+                    this.bookTitle = this.bookTitle + p_146460_1_;
                     this.updateButtons();
                     this.bookIsModified = true;
                 }
@@ -286,7 +281,7 @@ public class GuiScreenBook extends GuiScreen {
     private void pageInsertIntoCurrent(String p_146459_1_) {
         String s = this.pageGetCurrent();
         String s1 = s + p_146459_1_;
-        int i = this.fontRendererObj.splitStringWidth(s1 + "" + EnumChatFormatting.BLACK + "_", 118);
+        int i = this.fontRendererObj.splitStringWidth(s1 + EnumChatFormatting.BLACK + "_", 118);
 
         if (i <= 128 && s1.length() < 256) {
             this.pageSetCurrent(s1);
@@ -305,24 +300,24 @@ public class GuiScreenBook extends GuiScreen {
 
             if (this.bookIsUnsigned) {
                 if (this.updateCount / 6 % 2 == 0) {
-                    s = s + "" + EnumChatFormatting.BLACK + "_";
+                    s = s + EnumChatFormatting.BLACK + "_";
                 } else {
-                    s = s + "" + EnumChatFormatting.GRAY + "_";
+                    s = s + EnumChatFormatting.GRAY + "_";
                 }
             }
 
-            String s1 = I18n.format("book.editTitle", new Object[0]);
+            String s1 = I18n.format("book.editTitle");
             int k = this.fontRendererObj.getStringWidth(s1);
             this.fontRendererObj.drawString(s1, i + 36 + (116 - k) / 2, j + 16 + 16, 0);
             int l = this.fontRendererObj.getStringWidth(s);
             this.fontRendererObj.drawString(s, i + 36 + (116 - l) / 2, j + 48, 0);
-            String s2 = I18n.format("book.byAuthor", new Object[]{this.editingPlayer.getName()});
+            String s2 = I18n.format("book.byAuthor", this.editingPlayer.getName());
             int i1 = this.fontRendererObj.getStringWidth(s2);
             this.fontRendererObj.drawString(EnumChatFormatting.DARK_GRAY + s2, i + 36 + (116 - i1) / 2, j + 48 + 10, 0);
-            String s3 = I18n.format("book.finalizeWarning", new Object[0]);
+            String s3 = I18n.format("book.finalizeWarning");
             this.fontRendererObj.drawSplitString(s3, i + 36, j + 80, 116, 0);
         } else {
-            String s4 = I18n.format("book.pageIndicator", new Object[]{Integer.valueOf(this.currPage + 1), Integer.valueOf(this.bookTotalPages)});
+            String s4 = I18n.format("book.pageIndicator", Integer.valueOf(this.currPage + 1), Integer.valueOf(this.bookTotalPages));
             String s5 = "";
 
             if (this.bookPages != null && this.currPage >= 0 && this.currPage < this.bookPages.tagCount()) {
@@ -333,9 +328,9 @@ public class GuiScreenBook extends GuiScreen {
                 if (this.fontRendererObj.getBidiFlag()) {
                     s5 = s5 + "_";
                 } else if (this.updateCount / 6 % 2 == 0) {
-                    s5 = s5 + "" + EnumChatFormatting.BLACK + "_";
+                    s5 = s5 + EnumChatFormatting.BLACK + "_";
                 } else {
-                    s5 = s5 + "" + EnumChatFormatting.GRAY + "_";
+                    s5 = s5 + EnumChatFormatting.GRAY + "_";
                 }
             } else if (this.field_175387_B != this.currPage) {
                 if (ItemEditableBook.validBookTagContents(this.bookObj.getTagCompound())) {
@@ -346,7 +341,7 @@ public class GuiScreenBook extends GuiScreen {
                         this.field_175386_A = null;
                     }
                 } else {
-                    ChatComponentText chatcomponenttext = new ChatComponentText(EnumChatFormatting.DARK_RED.toString() + "* Invalid book tag *");
+                    ChatComponentText chatcomponenttext = new ChatComponentText(EnumChatFormatting.DARK_RED + "* Invalid book tag *");
                     this.field_175386_A = Lists.newArrayList(chatcomponenttext);
                 }
 

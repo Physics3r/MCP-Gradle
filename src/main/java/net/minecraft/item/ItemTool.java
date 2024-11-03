@@ -1,9 +1,6 @@
 package net.minecraft.item;
 
 import com.google.common.collect.Multimap;
-
-import java.util.Set;
-
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,10 +9,12 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.Set;
+
 public class ItemTool extends Item {
-    private Set<Block> effectiveBlocks;
+    private final Set<Block> effectiveBlocks;
     protected float efficiencyOnProperMaterial = 4.0F;
-    private float damageVsEntity;
+    private final float damageVsEntity;
     protected Item.ToolMaterial toolMaterial;
 
     protected ItemTool(float attackDamage, Item.ToolMaterial material, Set<Block> effectiveBlocks) {
@@ -62,7 +61,7 @@ public class ItemTool extends Item {
     }
 
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return this.toolMaterial.getRepairItem() == repair.getItem() ? true : super.getIsRepairable(toRepair, repair);
+        return this.toolMaterial.getRepairItem() == repair.getItem() || super.getIsRepairable(toRepair, repair);
     }
 
     public Multimap<String, AttributeModifier> getItemAttributeModifiers() {

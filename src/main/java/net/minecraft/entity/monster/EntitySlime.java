@@ -1,10 +1,6 @@
 package net.minecraft.entity.monster;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFindEntityNearest;
 import net.minecraft.entity.ai.EntityAIFindEntityNearestPlayer;
@@ -51,8 +47,8 @@ public class EntitySlime extends EntityLiving implements IMob {
         this.dataWatcher.updateObject(16, Byte.valueOf((byte) size));
         this.setSize(0.51000005F * (float) size, 0.51000005F * (float) size);
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue((double) (size * size));
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue((double) (0.2F + 0.1F * (float) size));
+        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(size * size);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.2F + 0.1F * (float) size);
         this.setHealth(this.getMaxHealth());
         this.experienceValue = size;
     }
@@ -108,7 +104,7 @@ public class EntitySlime extends EntityLiving implements IMob {
                 EnumParticleTypes enumparticletypes = this.getParticleType();
                 double d0 = this.posX + (double) f2;
                 double d1 = this.posZ + (double) f3;
-                world.spawnParticle(enumparticletypes, d0, this.getEntityBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D, new int[0]);
+                world.spawnParticle(enumparticletypes, d0, this.getEntityBoundingBox().minY, d1, 0.0D, 0.0D, 0.0D);
             }
 
             if (this.makesSoundOnLand()) {
@@ -283,7 +279,7 @@ public class EntitySlime extends EntityLiving implements IMob {
     }
 
     static class AISlimeAttack extends EntityAIBase {
-        private EntitySlime slime;
+        private final EntitySlime slime;
         private int field_179465_b;
 
         public AISlimeAttack(EntitySlime slimeIn) {
@@ -293,7 +289,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 
         public boolean shouldExecute() {
             EntityLivingBase entitylivingbase = this.slime.getAttackTarget();
-            return entitylivingbase == null ? false : (!entitylivingbase.isEntityAlive() ? false : !(entitylivingbase instanceof EntityPlayer) || !((EntityPlayer) entitylivingbase).capabilities.disableDamage);
+            return entitylivingbase != null && (entitylivingbase.isEntityAlive() && (!(entitylivingbase instanceof EntityPlayer) || !((EntityPlayer) entitylivingbase).capabilities.disableDamage));
         }
 
         public void startExecuting() {
@@ -303,7 +299,7 @@ public class EntitySlime extends EntityLiving implements IMob {
 
         public boolean continueExecuting() {
             EntityLivingBase entitylivingbase = this.slime.getAttackTarget();
-            return entitylivingbase == null ? false : (entitylivingbase.isEntityAlive() && ((!(entitylivingbase instanceof EntityPlayer) || !((EntityPlayer) entitylivingbase).capabilities.disableDamage) && --this.field_179465_b > 0));
+            return entitylivingbase != null && (entitylivingbase.isEntityAlive() && ((!(entitylivingbase instanceof EntityPlayer) || !((EntityPlayer) entitylivingbase).capabilities.disableDamage) && --this.field_179465_b > 0));
         }
 
         public void updateTask() {

@@ -2,20 +2,15 @@ package net.minecraft.world.storage;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagShort;
 import net.minecraft.world.WorldSavedData;
+
+import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 public class MapStorage {
     private final ISaveHandler saveHandler;
@@ -40,7 +35,7 @@ public class MapStorage {
 
                     if (file1 != null && file1.exists()) {
                         try {
-                            worldsaveddata = clazz.getConstructor(new Class[]{String.class}).newInstance(new Object[]{dataIdentifier});
+                            worldsaveddata = clazz.getConstructor(new Class[]{String.class}).newInstance(dataIdentifier);
                         } catch (Exception exception) {
                             throw new RuntimeException("Failed to instantiate " + clazz.toString(), exception);
                         }

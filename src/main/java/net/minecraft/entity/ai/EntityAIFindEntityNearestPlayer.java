@@ -1,15 +1,7 @@
 package net.minecraft.entity.ai;
 
 import com.google.common.base.Predicate;
-
-import java.util.Collections;
-import java.util.List;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,9 +9,12 @@ import net.minecraft.scoreboard.Team;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
+import java.util.List;
+
 public class EntityAIFindEntityNearestPlayer extends EntityAIBase {
     private static final Logger LOGGER = LogManager.getLogger();
-    private EntityLiving entityLiving;
+    private final EntityLiving entityLiving;
     private final Predicate<Entity> predicate;
     private final EntityAINearestAttackableTarget.Sorter sorter;
     private EntityLivingBase entityTarget;
@@ -51,10 +46,10 @@ public class EntityAIFindEntityNearestPlayer extends EntityAIBase {
                             f = 0.1F;
                         }
 
-                        d0 *= (double) (0.7F * f);
+                        d0 *= 0.7F * f;
                     }
 
-                    return (double) p_apply_1_.getDistanceToEntity(EntityAIFindEntityNearestPlayer.this.entityLiving) > d0 ? false : EntityAITarget.isSuitableTarget(EntityAIFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase) p_apply_1_, false, true);
+                    return !((double) p_apply_1_.getDistanceToEntity(EntityAIFindEntityNearestPlayer.this.entityLiving) > d0) && EntityAITarget.isSuitableTarget(EntityAIFindEntityNearestPlayer.this.entityLiving, (EntityLivingBase) p_apply_1_, false, true);
                 }
             }
         };
@@ -63,13 +58,13 @@ public class EntityAIFindEntityNearestPlayer extends EntityAIBase {
 
     public boolean shouldExecute() {
         double d0 = this.maxTargetRange();
-        List<EntityPlayer> list = this.entityLiving.worldObj.<EntityPlayer>getEntitiesWithinAABB(EntityPlayer.class, this.entityLiving.getEntityBoundingBox().expand(d0, 4.0D, d0), this.predicate);
+        List<EntityPlayer> list = this.entityLiving.worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.entityLiving.getEntityBoundingBox().expand(d0, 4.0D, d0), this.predicate);
         Collections.sort(list, this.sorter);
 
         if (list.isEmpty()) {
             return false;
         } else {
-            this.entityTarget = (EntityLivingBase) list.get(0);
+            this.entityTarget = list.get(0);
             return true;
         }
     }
@@ -91,7 +86,7 @@ public class EntityAIFindEntityNearestPlayer extends EntityAIBase {
                 return false;
             } else {
                 double d0 = this.maxTargetRange();
-                return this.entityLiving.getDistanceSqToEntity(entitylivingbase) > d0 * d0 ? false : !(entitylivingbase instanceof EntityPlayerMP) || !((EntityPlayerMP) entitylivingbase).theItemInWorldManager.isCreative();
+                return !(this.entityLiving.getDistanceSqToEntity(entitylivingbase) > d0 * d0) && (!(entitylivingbase instanceof EntityPlayerMP) || !((EntityPlayerMP) entitylivingbase).theItemInWorldManager.isCreative());
             }
         }
     }

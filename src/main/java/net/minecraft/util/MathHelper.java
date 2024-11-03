@@ -1,9 +1,9 @@
 package net.minecraft.util;
 
+import net.optifine.util.MathUtils;
+
 import java.util.Random;
 import java.util.UUID;
-
-import net.optifine.util.MathUtils;
 
 public class MathHelper {
     public static final float SQRT_2 = sqrt_float(2.0F);
@@ -265,7 +265,7 @@ public class MathHelper {
     }
 
     public static long getCoordinateRandom(int x, int y, int z) {
-        long i = (long) (x * 3129871L) ^ (long) z * 116129781L ^ (long) y;
+        long i = (x * 3129871L) ^ (long) z * 116129781L ^ (long) y;
         i = i * i * 42317861L + i * 11L;
         return i;
     }

@@ -1,19 +1,5 @@
 package net.optifine;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -42,13 +28,18 @@ import net.optifine.util.PropertiesOrdered;
 import net.optifine.util.ResUtils;
 import net.optifine.util.StrUtils;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+
 public class CustomItems {
-    private static CustomItemProperties[][] itemProperties = (CustomItemProperties[][]) null;
-    private static CustomItemProperties[][] enchantmentProperties = (CustomItemProperties[][]) null;
+    private static CustomItemProperties[][] itemProperties = null;
+    private static CustomItemProperties[][] enchantmentProperties = null;
     private static Map mapPotionIds = null;
-    private static ItemModelGenerator itemModelGenerator = new ItemModelGenerator();
+    private static final ItemModelGenerator itemModelGenerator = new ItemModelGenerator();
     private static boolean useGlint = true;
-    private static boolean renderOffHand = false;
+    private static final boolean renderOffHand = false;
     public static final int MASK_POTION_SPLASH = 16384;
     public static final int MASK_POTION_NAME = 63;
     public static final int MASK_POTION_EXTENDED = 64;
@@ -64,8 +55,8 @@ public class CustomItems {
     private static final String TYPE_POTION_LINGER = "linger";
 
     public static void update() {
-        itemProperties = (CustomItemProperties[][]) null;
-        enchantmentProperties = (CustomItemProperties[][]) null;
+        itemProperties = null;
+        enchantmentProperties = null;
         useGlint = true;
 
         if (Config.isCustomItems()) {
@@ -80,11 +71,11 @@ public class CustomItems {
             update(Config.getDefaultResourcePack());
 
             if (itemProperties.length <= 0) {
-                itemProperties = (CustomItemProperties[][]) null;
+                itemProperties = null;
             }
 
             if (enchantmentProperties.length <= 0) {
-                enchantmentProperties = (CustomItemProperties[][]) null;
+                enchantmentProperties = null;
             }
         }
     }
@@ -104,23 +95,22 @@ public class CustomItems {
             inputstream.close();
             useGlint = Config.parseBoolean(properties.getProperty("useGlint"), true);
         } catch (FileNotFoundException var4) {
-            return;
         } catch (IOException ioexception) {
             ioexception.printStackTrace();
         }
     }
 
     private static void update(IResourcePack rp) {
-        String[] astring = ResUtils.collectFiles(rp, (String) "mcpatcher/cit/", (String) ".properties", (String[]) null);
+        String[] astring = ResUtils.collectFiles(rp, "mcpatcher/cit/", ".properties", null);
         Map map = makeAutoImageProperties(rp);
 
         if (map.size() > 0) {
             Set set = map.keySet();
-            String[] astring1 = (String[]) ((String[]) set.toArray(new String[set.size()]));
-            astring = (String[]) ((String[]) Config.addObjectsToArray(astring, astring1));
+            String[] astring1 = (String[]) set.toArray(new String[set.size()]);
+            astring = (String[]) Config.addObjectsToArray(astring, astring1);
         }
 
-        Arrays.sort((Object[]) astring);
+        Arrays.sort(astring);
         List list = makePropertyList(itemProperties);
         List list1 = makePropertyList(enchantmentProperties);
 
@@ -280,7 +270,7 @@ public class CustomItems {
             properties.put("items", "" + itemId);
             return properties;
         } else {
-            int[] aint = (int[]) ((int[]) getMapPotionIds().get(name));
+            int[] aint = (int[]) getMapPotionIds().get(name);
 
             if (aint == null) {
                 Config.warn("Potion not found for image: " + path);
@@ -311,7 +301,7 @@ public class CustomItems {
                 Properties properties1 = new PropertiesOrdered();
                 properties1.put("type", "item");
                 properties1.put("items", "" + itemId);
-                properties1.put("damage", "" + stringbuffer.toString());
+                properties1.put("damage", String.valueOf(stringbuffer));
                 properties1.put("damageMask", "" + k);
 
                 if (type.equals("splash")) {
@@ -420,7 +410,7 @@ public class CustomItems {
             List list = (List) lists.get(i);
 
             if (list != null) {
-                CustomItemProperties[] acustomitemproperties1 = (CustomItemProperties[]) ((CustomItemProperties[]) list.toArray(new CustomItemProperties[list.size()]));
+                CustomItemProperties[] acustomitemproperties1 = (CustomItemProperties[]) list.toArray(new CustomItemProperties[list.size()]);
                 Arrays.sort(acustomitemproperties1, new CustomItemsComparator());
                 acustomitemproperties[i] = acustomitemproperties1;
             }
@@ -551,7 +541,7 @@ public class CustomItems {
                     for (int j = 0; j < acustomitemproperties.length; ++j) {
                         CustomItemProperties customitemproperties = acustomitemproperties[j];
 
-                        if (customitemproperties.type == type && matchesProperties(customitemproperties, itemStack, (int[][]) null)) {
+                        if (customitemproperties.type == type && matchesProperties(customitemproperties, itemStack, null)) {
                             return customitemproperties;
                         }
                     }
@@ -646,9 +636,7 @@ public class CustomItems {
                     return false;
                 }
 
-                if (cip.hand == 2 && !renderOffHand) {
-                    return false;
-                }
+                return cip.hand != 2 || renderOffHand;
             }
 
             return true;

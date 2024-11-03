@@ -1,9 +1,6 @@
 package net.minecraft.world.gen;
 
 import com.google.common.base.Objects;
-
-import java.util.Random;
-
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,14 +10,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
+import java.util.Random;
+
 public class MapGenCaves extends MapGenBase {
     protected void func_180703_a(long p_180703_1_, int p_180703_3_, int p_180703_4_, ChunkPrimer p_180703_5_, double p_180703_6_, double p_180703_8_, double p_180703_10_) {
         this.func_180702_a(p_180703_1_, p_180703_3_, p_180703_4_, p_180703_5_, p_180703_6_, p_180703_8_, p_180703_10_, 1.0F + this.rand.nextFloat() * 6.0F, 0.0F, 0.0F, -1, -1, 0.5D);
     }
 
     protected void func_180702_a(long p_180702_1_, int p_180702_3_, int p_180702_4_, ChunkPrimer p_180702_5_, double p_180702_6_, double p_180702_8_, double p_180702_10_, float p_180702_12_, float p_180702_13_, float p_180702_14_, int p_180702_15_, int p_180702_16_, double p_180702_17_) {
-        double d0 = (double) (p_180702_3_ * 16 + 8);
-        double d1 = (double) (p_180702_4_ * 16 + 8);
+        double d0 = p_180702_3_ * 16 + 8;
+        double d1 = p_180702_4_ * 16 + 8;
         float f = 0.0F;
         float f1 = 0.0F;
         Random random = new Random(p_180702_1_);
@@ -44,9 +43,9 @@ public class MapGenCaves extends MapGenBase {
             double d3 = d2 * p_180702_17_;
             float f2 = MathHelper.cos(p_180702_14_);
             float f3 = MathHelper.sin(p_180702_14_);
-            p_180702_6_ += (double) (MathHelper.cos(p_180702_13_) * f2);
-            p_180702_8_ += (double) f3;
-            p_180702_10_ += (double) (MathHelper.sin(p_180702_13_) * f2);
+            p_180702_6_ += MathHelper.cos(p_180702_13_) * f2;
+            p_180702_8_ += f3;
+            p_180702_10_ += MathHelper.sin(p_180702_13_) * f2;
 
             if (flag) {
                 p_180702_14_ = p_180702_14_ * 0.92F;
@@ -70,8 +69,8 @@ public class MapGenCaves extends MapGenBase {
             if (flag2 || random.nextInt(4) != 0) {
                 double d4 = p_180702_6_ - d0;
                 double d5 = p_180702_10_ - d1;
-                double d6 = (double) (p_180702_16_ - p_180702_15_);
-                double d7 = (double) (p_180702_12_ + 2.0F + 16.0F);
+                double d6 = p_180702_16_ - p_180702_15_;
+                double d7 = p_180702_12_ + 2.0F + 16.0F;
 
                 if (d4 * d4 + d5 * d5 - d6 * d6 > d7 * d7) {
                     return;
@@ -145,7 +144,7 @@ public class MapGenCaves extends MapGenBase {
 
                                         if (d9 > -0.7D && d10 * d10 + d9 * d9 + d8 * d8 < 1.0D) {
                                             IBlockState iblockstate1 = p_180702_5_.getBlockState(j3, j2, i2);
-                                            IBlockState iblockstate2 = (IBlockState) Objects.firstNonNull(p_180702_5_.getBlockState(j3, j2 + 1, i2), Blocks.air.getDefaultState());
+                                            IBlockState iblockstate2 = Objects.firstNonNull(p_180702_5_.getBlockState(j3, j2 + 1, i2), Blocks.air.getDefaultState());
 
                                             if (iblockstate1.getBlock() == Blocks.grass || iblockstate1.getBlock() == Blocks.mycelium) {
                                                 flag1 = true;
@@ -183,7 +182,7 @@ public class MapGenCaves extends MapGenBase {
     }
 
     protected boolean func_175793_a(IBlockState p_175793_1_, IBlockState p_175793_2_) {
-        return p_175793_1_.getBlock() == Blocks.stone ? true : (p_175793_1_.getBlock() == Blocks.dirt ? true : (p_175793_1_.getBlock() == Blocks.grass ? true : (p_175793_1_.getBlock() == Blocks.hardened_clay ? true : (p_175793_1_.getBlock() == Blocks.stained_hardened_clay ? true : (p_175793_1_.getBlock() == Blocks.sandstone ? true : (p_175793_1_.getBlock() == Blocks.red_sandstone ? true : (p_175793_1_.getBlock() == Blocks.mycelium ? true : (p_175793_1_.getBlock() == Blocks.snow_layer ? true : (p_175793_1_.getBlock() == Blocks.sand || p_175793_1_.getBlock() == Blocks.gravel) && p_175793_2_.getBlock().getMaterial() != Material.water))))))));
+        return p_175793_1_.getBlock() == Blocks.stone || (p_175793_1_.getBlock() == Blocks.dirt || (p_175793_1_.getBlock() == Blocks.grass || (p_175793_1_.getBlock() == Blocks.hardened_clay || (p_175793_1_.getBlock() == Blocks.stained_hardened_clay || (p_175793_1_.getBlock() == Blocks.sandstone || (p_175793_1_.getBlock() == Blocks.red_sandstone || (p_175793_1_.getBlock() == Blocks.mycelium || (p_175793_1_.getBlock() == Blocks.snow_layer || (p_175793_1_.getBlock() == Blocks.sand || p_175793_1_.getBlock() == Blocks.gravel) && p_175793_2_.getBlock().getMaterial() != Material.water))))))));
     }
 
     protected void recursiveGenerate(World worldIn, int chunkX, int chunkZ, int p_180701_4_, int p_180701_5_, ChunkPrimer chunkPrimerIn) {

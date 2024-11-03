@@ -1,12 +1,12 @@
 package net.optifine;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
 import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.config.ConnectedParser;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 public class RandomEntityProperties {
     public String name = null;
@@ -69,7 +69,7 @@ public class RandomEntityProperties {
             }
         }
 
-        RandomEntityRule[] arandomentityrule = (RandomEntityRule[]) ((RandomEntityRule[]) list.toArray(new RandomEntityRule[list.size()]));
+        RandomEntityRule[] arandomentityrule = (RandomEntityRule[]) list.toArray(new RandomEntityRule[list.size()]);
         return arandomentityrule;
     }
 
@@ -104,6 +104,6 @@ public class RandomEntityProperties {
     }
 
     public boolean isDefault() {
-        return this.rules != null ? false : this.resourceLocations == null;
+        return this.rules == null && this.resourceLocations == null;
     }
 }
